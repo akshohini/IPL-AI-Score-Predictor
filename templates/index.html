@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IPL AI Score Predictor</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="background"></div>
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>🏏 IPL AI Score Predictor</h1>
+
+            <p>
+                Predict First Innings Score using
+                <span>Deep Learning</span>
+            </p>
+
+        </div>
+
+    </section>
+
+    <section class="main-container">
+
+        <div class="prediction-card">
+
+            <h2>Match Details</h2>
+
+            <form action="/predict" method="POST">
+
+                <div class="grid">
+
+                    <!-- Bat Team -->
+
+                   <div class="input-box">
+    <label>Batting Team</label>
+
+    <select name="bat_team" required>
+        <option value="" disabled {% if not request.form.get('bat_team') %}selected{% endif %}>Select batting team</option>
+        {% for team in bat_teams %}
+        <option value="{{ team }}" {% if request.form.get('bat_team') == team %}selected{% endif %}>{{ team }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+                    <!-- Bowl Team -->
+
+                    <div class="input-box">
+    <label>Bowling Team</label>
+
+    <select name="bowl_team" required>
+        <option value="" disabled {% if not request.form.get('bowl_team') %}selected{% endif %}>Select bowling team</option>
+        {% for team in bowl_teams %}
+        <option value="{{ team }}" {% if request.form.get('bowl_team') == team %}selected{% endif %}>{{ team }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+                    <!-- Venue -->
+
+                    <div class="input-box">
+    <label>Venue</label>
+
+    <select name="venue" required>
+        <option value="" disabled {% if not request.form.get('venue') %}selected{% endif %}>Select venue</option>
+        {% for v in venues %}
+        <option value="{{ v }}" {% if request.form.get('venue') == v %}selected{% endif %}>{{ v }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+                    <!-- Batsman -->
+
+                    <div class="input-box">
+                        <label>Batsman</label>
+                        <select name="batsman" required>
+        <option value="" disabled {% if not request.form.get('batsman') %}selected{% endif %}>Select batsman</option>
+        {% for b in batsmen %}
+        <option value="{{ b }}" {% if request.form.get('batsman') == b %}selected{% endif %}>{{ b }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+                    <!-- Bowler -->
+
+                    <div class="input-box">
+    <label>Bowler</label>
+
+    <select name="bowler" required>
+        <option value="" disabled {% if not request.form.get('bowler') %}selected{% endif %}>Select bowler</option>
+        {% for bo in bowlers %}
+        <option value="{{ bo }}" {% if request.form.get('bowler') == bo %}selected{% endif %}>{{ bo }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+                    <!-- Runs -->
+
+                    <div class="input-box">
+
+                        <label>Current Runs</label>
+
+                        <input
+                            type="number"
+                            name="runs"
+                            min="0"
+                            max="300"
+                            placeholder="e.g. 85"
+                            value="{{ request.form.get('runs','') }}"
+                            required>
+
+                    </div>
+
+                    <!-- Wickets -->
+
+                    <div class="input-box">
+
+                        <label>Wickets</label>
+
+                        <input
+                            type="number"
+                            name="wickets"
+                            min="0"
+                            max="10"
+                            placeholder="e.g. 2"
+                            value="{{ request.form.get('wickets','') }}"
+                            required>
+
+                    </div>
+
+                    <!-- Overs -->
+
+                    <div class="input-box">
+
+                        <label>Overs</label>
+
+                        <input
+                            type="number"
+                            step="0.1"
+                            min="5"
+                            max="20"
+                            name="overs"
+                            placeholder="e.g. 12.3"
+                            value="{{ request.form.get('overs','') }}"
+                            required>
+
+                    </div>
+                    <div class="input-box">
+
+    <label>Striker Runs</label>
+
+    <input
+        type="number"
+        name="striker"
+        min="0"
+        placeholder="e.g. 42"
+        value="{{ request.form.get('striker','') }}"
+        required>
+
+</div>
+                                    </div>
+
+                <div class="button-area">
+
+                    <button type="submit">
+                        🚀 Predict Score
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="result-card">
+
+            <h2>Prediction Result</h2>
+
+            {% if prediction %}
+
+            <div class="prediction-box">
+
+                <h3>🏆 Expected First Innings Score</h3>
+
+                <h1>{{ prediction }}</h1>
+
+                <p>Runs</p>
+
+            </div>
+
+            {% else %}
+
+            <div class="prediction-placeholder">
+
+                <h3>No Prediction Yet</h3>
+
+                <p>
+                    Fill the match details and click
+                    <strong>Predict Score</strong>.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+    <footer>
+
+        <p>
+            Developed with ❤️ using
+            <strong>TensorFlow, Flask & Deep Learning</strong>
+        </p>
+
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
